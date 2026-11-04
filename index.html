@@ -232,18 +232,25 @@ let charts = [];
 })();
 
 /* ================= нормалізація ================= */
+// Дата з таблиці може прийти як «02.11.2026», «2.11.2026» або ISO «2026-11-01T22:00:00.000Z» (UTC) — зводимо до дд.мм.рррр за місцевим часом.
+function normDate(v) {
+  const s = String(v ?? '').trim();
+  if (/^\d{4}-\d{2}-\d{2}T/.test(s)) { const d = new Date(s); if (!isNaN(d)) return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}`; }
+  const m = s.match(/^(\d{1,2})[./](\d{1,2})[./](\d{4})$/);
+  return m ? `${pad(m[1])}.${pad(m[2])}.${m[3]}` : s;
+}
 const normP = r => {
   const name = String(r.exercise ?? '').trim();
   if (!name) return null;
-  return { week: +r.week || 1, date: String(r.date ?? '').trim(), day: +r.day_no || 1, order: +r.order || 0,
+  return { week: +r.week || 1, date: normDate(r.date), day: +r.day_no || 1, order: +r.order || 0,
     ss: String(r.superset ?? '').trim(), name, video: String(r.video ?? '').trim(), warmup: String(r.warmup ?? '').trim(),
     w: num(r.weight_kg), reps: num(r.reps), sets: num(r.sets) || 1, rest: String(r.rest ?? '').trim(), notes: String(r.notes ?? '').trim() };
 };
 const flag = v => (v === true || v === 1 || ['1', 'true', 'TRUE'].includes(String(v))) ? 1 : 0;
-const normL = r => ({ id: String(r.id), saved_at: String(r.saved_at || ''), week: +r.week, date: String(r.date || ''), day_no: +r.day_no,
+const normL = r => ({ id: String(r.id), saved_at: String(r.saved_at || ''), week: +r.week, date: normDate(r.date), day_no: +r.day_no,
   order: +r.order, exercise: String(r.exercise || ''), set_no: +r.set_no || 0, weight_kg: num(r.weight_kg), reps: num(r.reps),
   rir: num(r.rir), is_warmup: flag(r.is_warmup), comment: String(r.comment || ''), video_url: String(r.video_url || '') });
-const normSess = r => ({ id: String(r.id), date: String(r.date || ''), week: +r.week, day_no: +r.day_no, started_at: String(r.started_at || ''),
+const normSess = r => ({ id: String(r.id), date: normDate(r.date), week: +r.week, day_no: +r.day_no, started_at: String(r.started_at || ''),
   finished_at: String(r.finished_at || ''), wellbeing_1_5: num(r.wellbeing_1_5), comment: String(r.comment || '') });
 function mergeById(list, pend) {
   const m = new Map(list.map(x => [x.id, x]));

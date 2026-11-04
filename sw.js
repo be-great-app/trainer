@@ -1,5 +1,5 @@
 // Офлайн-кеш: застосунок відкривається без інтернету; запити до Google не кешуються.
-const CACHE = 'trener-v3';
+const CACHE = 'trener-v4';
 const SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
