@@ -1,6 +1,6 @@
 // Офлайн-кеш. Сторінка: спершу мережа (завжди свіжа версія), без інтернету — збережена копія.
 // Решта файлів: кеш, оновлюється у фоні. Запити до Apps Script не кешуються.
-const CACHE = 'trener-v17';
+const CACHE = 'trener-v20';
 const SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

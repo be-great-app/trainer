@@ -56,9 +56,9 @@ nav#tabs a.on::before{content:"";position:absolute;left:12%;right:12%;top:-1px;h
 .wdot{position:absolute;right:-8px;top:-5px;width:6px;height:6px;border-radius:50%;background:var(--acc)}
 .wd.sel::after{content:"";position:absolute;bottom:-3px;width:22px;height:2px;border-radius:2px;background:var(--acc)}
 /* куля */
-.ring{width:78%;max-width:340px;margin:30px auto 8px}.ring svg{display:block;width:100%;height:auto;overflow:visible}
+.ring{width:94%;max-width:420px;margin:22px auto 4px}.ring svg{display:block;width:100%;height:auto;overflow:visible}
 .rg,.rc{cursor:pointer}
-.rl{font:400 11.5px var(--sans);letter-spacing:.02em;fill:var(--ink);opacity:.85}.rl.on{fill:#fff;opacity:1;font-weight:600}.rl.fin{fill:var(--gold);opacity:.9}
+.rl{font:400 13px var(--sans);letter-spacing:.02em;fill:var(--gold);opacity:.9}.rl.on{fill:#fff;opacity:1;font-weight:400}.rl.fin{fill:#fff;opacity:1;font-weight:700}
 .rk{font:400 18.6px var(--serif);fill:#1c0702;letter-spacing:.01em}
 .rs{font:500 14.3px var(--sans);fill:#1c0702}
 .cta{display:block;width:190px;margin:4px auto 26px;padding:5px 10px 4px;text-align:center;border-radius:999px;background:var(--grad);color:#1c0702;font-size:11.5px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;line-height:1.35}
@@ -572,13 +572,18 @@ function arcD(a0, a1, r) {
 }
 const rtick = (a, r1, r2, attrs) => { const [x1, y1] = pt(a, r1), [x2, y2] = pt(a, r2); return `<line x1="${f1(x1)}" y1="${f1(y1)}" x2="${f1(x2)}" y2="${f1(y2)}" stroke-linecap="round" ${attrs}/>`; };
 
-const DUMB = (x, y, ang, col) => `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(ang)})"><path d="M-4.2 0h8.4" stroke="${col}" stroke-width="1.4"/><rect x="-6" y="-2.6" width="2" height="5.2" rx=".8" fill="${col}"/><rect x="4" y="-2.6" width="2" height="5.2" rx=".8" fill="${col}"/></g>`;
+// Гантель за макетом (workout_app.svg): масивні диски, замки, торці; виконаний підхід — біла, невиконаний — чорна з тонким помаранчевим контуром
+const DUMB = (x, y, ang, done) => `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(ang)})" fill="${done ? '#fff' : '#000'}" stroke="${done ? 'none' : 'rgba(239,107,66,.38)'}" stroke-width=".45" stroke-linejoin="round"><rect x="-3.4" y="-.95" width="6.8" height="1.9"/><rect x="-5.5" y="-3.8" width="2.3" height="7.6" rx=".55"/><rect x="3.2" y="-3.8" width="2.3" height="7.6" rx=".55"/><rect x="-7.1" y="-2.6" width="1.25" height="5.2" rx=".45"/><rect x="5.85" y="-2.6" width="1.25" height="5.2" rx=".45"/><rect x="-8.15" y="-1.15" width=".75" height="2.3" rx=".3"/><rect x="7.4" y="-1.15" width=".75" height="2.3" rx=".3"/></g>`;
 // Куля з кільцем вправ (макет: чорний фон, помаранчева сфера, дуги вправ з гантельками)
 function ringSVG(day, ctr) {
   // Геометрія з макета: зовнішнє кільце r184, диск r158, куля r114 зміщена вліво-вниз
-  const rT = 171, rL = 197, SX = 171, SY = 231, SR = 114;
-  let defs = `<radialGradient id="sph" cx="78%" cy="18%" r="95%"><stop offset="0" stop-color="#f5875e"/><stop offset=".42" stop-color="#e65a2a"/><stop offset="1" stop-color="#c22c0a"/></radialGradient>
-    <radialGradient id="dsk" cx="68%" cy="74%" r="62%"><stop offset="0" stop-color="#8a3214"/><stop offset=".55" stop-color="#3a160a"/><stop offset="1" stop-color="#160805"/></radialGradient>
+  // Геометрія з workout_app.svg (1080 → 424, k = 0.4842): контури r155–158 і r181–184, дуги r169.5 × 12.6,
+  // диск — радіальний градієнт з фокусом зліва внизу, куля (168,234) r113 з лінійним градієнтом
+  const rT = 169.5, rL = 197, SX = 168, SY = 234, SR = 113;
+  let defs = `<linearGradient id="sph" gradientUnits="userSpaceOnUse" x1="65.4" y1="341.5" x2="262.2" y2="134.7"><stop offset=".21" stop-color="#cb300a"/><stop offset=".86" stop-color="#ef6b42"/></linearGradient>
+    <radialGradient id="dsk" gradientUnits="userSpaceOnUse" cx="187.5" cy="195.9" r="179.9" fx="73.4" fy="312.8"><stop offset=".47" stop-color="#cb300a"/><stop offset=".81" stop-color="#5a2819"/><stop offset="1" stop-color="#000"/></radialGradient>
+    <linearGradient id="cnt" gradientUnits="userSpaceOnUse" x1="27" y1="379.1" x2="405" y2="-12.2"><stop offset=".09" stop-color="#522517"/><stop offset=".5" stop-color="#cb300a"/><stop offset=".54" stop-color="#ad2a0a"/><stop offset=".6" stop-color="#84220a"/><stop offset=".66" stop-color="#611c0a"/><stop offset=".72" stop-color="#47170a"/><stop offset=".78" stop-color="#34130a"/><stop offset=".85" stop-color="#28110a"/><stop offset=".92" stop-color="#25110a"/></linearGradient>
+    <linearGradient id="cur" x1="0" y1="1" x2="1" y2="0"><stop offset=".15" stop-color="#cb300a"/><stop offset=".9" stop-color="#ef6b42"/></linearGradient>
     <filter id="glw" filterUnits="userSpaceOnUse" x="-60" y="-60" width="520" height="520"><feGaussianBlur stdDeviation="14"/></filter>`;
   let body = '';
   if (day) {
@@ -586,22 +591,20 @@ function ringSVG(day, ctr) {
     let a = -90 + step * gap / 2;
     items.forEach((p, gi) => {
       const done = Math.min(p.sets, workOf(day.week, day.day, p.order).length), a0 = a, a1 = a + p.sets * step;
-      let g = `<path d="${arcD(a0 + 1, a1 - 1, rT)}" stroke="rgba(240,98,58,.13)" stroke-width="13" stroke-linecap="round" fill="none"/>`;
-      if (done) {
-        const e1 = a0 + done * step - 1, [x0, y0] = pt(a0 + 1, rT), [x1, y1] = pt(e1, rT);
-        defs += `<linearGradient id="ag${gi}" gradientUnits="userSpaceOnUse" x1="${f1(x0)}" y1="${f1(y0)}" x2="${f1(x1)}" y2="${f1(y1)}"><stop offset="0" stop-color="#140604"/><stop offset=".45" stop-color="#9a2e0e"/><stop offset="1" stop-color="#ff9c72"/></linearGradient>`;
-        g += `<path d="${arcD(a0 + 1, e1, rT)}" stroke="url(#ag${gi})" stroke-width="13" stroke-linecap="round" fill="none"/>`;
-      }
+      // Підкладка — завжди повна дуга з однаковим градієнтом (чорний → #ef6b42); прогрес показують гантелі
+      const [x0, y0] = pt(a0 + 1, rT), [x1, y1] = pt(a1 - 1, rT);
+      defs += `<linearGradient id="ag${gi}" gradientUnits="userSpaceOnUse" x1="${f1(x0)}" y1="${f1(y0)}" x2="${f1(x1)}" y2="${f1(y1)}"><stop offset="0" stop-color="#000"/><stop offset=".1" stop-color="#220f09"/><stop offset=".3" stop-color="#6a2f1d"/><stop offset=".5" stop-color="#a3492d"/><stop offset=".68" stop-color="#cc5b38"/><stop offset=".82" stop-color="#e5663f"/><stop offset="1" stop-color="#ef6b42"/></linearGradient>`;
+      let g = `<path d="${arcD(a0 + 1, a1 - 1, rT)}" stroke="url(#ag${gi})" stroke-width="12.6" stroke-linecap="round" fill="none"/>`;
       for (let k = 0; k < p.sets; k++) {
-        const ang = a + (k + .5) * step, [x, y] = pt(ang, rT), t = done ? (k + .5) / done : 0;
-        if (np && np.p === p && np.n === k) g += `<circle cx="${f1(x)}" cy="${f1(y)}" r="14" fill="#f0623a" opacity=".45" filter="url(#glw)"/><circle cx="${f1(x)}" cy="${f1(y)}" r="7.5" fill="#fff4ee" stroke="#f0623a" stroke-width="2.5"/>`;
-        else g += DUMB(x, y, ang + 90, k < done ? (t > .62 ? '#2a0e04' : '#ff9c72') : 'rgba(240,98,58,.6)');
+        const ang = a + (k + .5) * step, [x, y] = pt(ang, rT);
+        if (np && np.p === p && np.n === k) g += `<circle cx="${f1(x)}" cy="${f1(y)}" r="12" fill="#ef6b42" opacity=".4" filter="url(#glw)"/><circle cx="${f1(x)}" cy="${f1(y)}" r="5.6" fill="url(#cur)" stroke="#000" stroke-width="1.8"/>`;
+        else g += DUMB(x, y, ang + 90, k < done);
       }
       const mid = (((a0 + a1) / 2) % 360 + 360) % 360, bottom = mid > 8 && mid < 172;
-      const len = (a1 - a0 + 6) * Math.PI / 180 * rL, maxc = Math.max(3, Math.floor(len / 7.6));
+      const len = (a1 - a0 + 6) * Math.PI / 180 * rL, maxc = Math.max(3, Math.floor(len / 8.6));
       const tx = fitLabel(shortName(p.name).toLowerCase(), maxc);
-      defs += `<path id="rgL${gi}" d="${bottom ? arcD(a1 + 3, a0 - 3, rL + 8) : arcD(a0 - 3, a1 + 3, rL)}"/>`;
-      g += `<text class="rl${np && np.p === p ? ' on' : ''}${done >= p.sets ? ' fin' : ''}"><textPath href="#rgL${gi}" startOffset="50%" text-anchor="middle">${esc(tx)}</textPath></text>`;
+      defs += `<path id="rgL${gi}" d="${bottom ? arcD(a1 + 3, a0 - 3, rL + 9.5) : arcD(a0 - 3, a1 + 3, rL)}"/>`;
+      g += `<text class="rl${done >= p.sets ? ' fin' : done > 0 || (np && np.p === p) ? ' on' : ''}"><textPath href="#rgL${gi}" startOffset="50%" text-anchor="middle">${esc(tx)}</textPath></text>`;
       body += `<g class="rg" data-href="#/ex/${day.week}/${day.day}/${p.order}">${g}</g>`;
       a = a1 + step * gap;
     });
@@ -610,8 +613,9 @@ function ringSVG(day, ctr) {
   const TX = f1(SX - .68 * SR), LH = 21.9, n = ctr.title.length, y1 = SY - 2 - (n - 2) * LH / 2;
   const lines = ctr.title.map((l, i) => `<tspan x="${TX}" dy="${i ? LH : 0}">${esc(l)}</tspan>`).join('');
   return `<svg viewBox="-12 -12 424 424" role="img" aria-label="${esc(ctr.title.join(' ') + '. ' + ctr.sub)}"><defs>${defs}</defs>
-    <circle cx="200" cy="200" r="184" fill="none" stroke="#b8360f" stroke-opacity=".75" stroke-width="2"/>
-    <circle cx="200" cy="200" r="158" fill="url(#dsk)" stroke="#c23a12" stroke-opacity=".7" stroke-width="1.6"/>
+    <circle cx="187.5" cy="195.9" r="179.9" fill="url(#dsk)"/>
+    <circle cx="200" cy="200" r="169.5" fill="none" stroke="url(#cnt)" stroke-width="29"/>
+    <circle cx="200" cy="200" r="169.5" fill="none" stroke="#000" stroke-width="23.4"/>
     ${body}
     <g class="rc" data-href="${ctr.href}"><circle cx="${SX}" cy="${SY}" r="${SR}" fill="url(#sph)"/>
     <text y="${f1(y1)}" class="rk">${lines}</text><text x="${TX}" y="${f1(y1 + (n - 1) * LH + 19.7)}" class="rs">${esc(ctr.sub)}</text></g></svg>`;
